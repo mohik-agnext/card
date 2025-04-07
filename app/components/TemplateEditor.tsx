@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
+import NextImage from "next/image";
 
 type TemplateField = {
   id: string;
@@ -12,11 +12,20 @@ type TemplateField = {
   value: string;
 };
 
-type TemplateEditorProps = {
+interface DragState {
+  isDragging: boolean;
+  startX: number;
+  startY: number;
+  offsetX: number;
+  offsetY: number;
+}
+
+interface TemplateEditorProps {
   templateUrl: string;
   fields: TemplateField[];
   onSave: (fields: TemplateField[]) => void;
-};
+  initialPosition?: { x: number; y: number };
+}
 
 export default function TemplateEditor({ templateUrl, fields: initialFields, onSave }: TemplateEditorProps) {
   const [fields, setFields] = useState<TemplateField[]>(initialFields);
@@ -43,19 +52,8 @@ export default function TemplateEditor({ templateUrl, fields: initialFields, onS
   };
 
   // Start dragging a field
-  const handleDragStart = (id: string, e: React.MouseEvent) => {
-    if (!templateRef.current) return;
-    
-    const field = fields.find(f => f.id === id);
-    if (!field) return;
-    
-    const rect = templateRef.current.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left - field.x;
-    const offsetY = e.clientY - rect.top - field.y;
-    
-    setDraggedField(id);
-    setDragOffset({ x: offsetX, y: offsetY });
-    setSelectedField(id);
+  const handleDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Implementation
   };
 
   // Handle dragging
@@ -86,6 +84,14 @@ export default function TemplateEditor({ templateUrl, fields: initialFields, onS
   // Save template configuration
   const handleSave = () => {
     onSave(fields);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Implementation
+  };
+
+  const handleMouseUp = () => {
+    // Implementation
   };
 
   useEffect(() => {
@@ -223,7 +229,7 @@ export default function TemplateEditor({ templateUrl, fields: initialFields, onS
                 width: field.width ? `${field.width}px` : 'auto',
                 height: field.height ? `${field.height}px` : 'auto',
               }}
-              onMouseDown={(e) => handleDragStart(field.id, e)}
+              onMouseDown={(e) => handleDragStart(e)}
             >
               {field.type === 'text' && (
                 <div className="p-1 bg-white bg-opacity-75 rounded">

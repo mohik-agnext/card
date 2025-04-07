@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from "next/link";
-import Image from "next/image";
+import NextImage from "next/image";
 
 export default function OnboardingPage() {
   const [name, setName] = useState('');
@@ -127,10 +127,13 @@ export default function OnboardingPage() {
   const renderProfileImage = () => (
     <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#2F7B75] flex-shrink-0">
       {profileImage ? (
-        <img
+        <NextImage
           src={profileImage}
           alt="Profile"
+          width={192}
+          height={192}
           className="w-full h-full object-cover"
+          unoptimized
         />
       ) : (
         <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -189,8 +192,8 @@ export default function OnboardingPage() {
         <div className="text-gray-600 text-sm leading-relaxed">
           {description || 'Your focus areas and description will appear here'}
         </div>
-      </div>
-    </div>
+            </div>
+          </div>
   );
 
   // Handle search input
@@ -244,10 +247,13 @@ export default function OnboardingPage() {
     <div className="relative">
       <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#2F7B75] shadow-lg">
         {smallProfileImage ? (
-          <img
+          <NextImage
             src={smallProfileImage}
             alt="Small Profile"
+            width={48}
+            height={48}
             className="w-full h-full object-cover"
+            unoptimized
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -331,10 +337,13 @@ export default function OnboardingPage() {
               onClick={() => handleSelectSuggestion(record)}
             >
               {record.fields.Photo?.[0]?.url && (
-                <img
+                <NextImage
                   src={record.fields.Photo[0].url}
                   alt={record.fields.Name}
+                  width={32}
+                  height={32}
                   className="w-8 h-8 rounded-full mr-3 object-cover"
+                  unoptimized
                 />
               )}
               <span>{record.fields.Name}</span>
@@ -342,7 +351,7 @@ export default function OnboardingPage() {
           ))}
         </div>
       )}
-    </div>
+          </div>
   );
 
   // Handle manager search input
@@ -421,10 +430,13 @@ export default function OnboardingPage() {
                 onClick={() => handleManagerSuggestionSelect(record)}
               >
                 {record.fields.Photo?.[0]?.url && (
-                  <img
+                  <NextImage
                     src={record.fields.Photo[0].url}
                     alt={record.fields.Name}
+                    width={32}
+                    height={32}
                     className="w-8 h-8 rounded-full mr-3 object-cover"
+                    unoptimized
                   />
                 )}
                 <span>{record.fields.Name}</span>
@@ -433,7 +445,7 @@ export default function OnboardingPage() {
           </div>
         )}
       </div>
-    </div>
+          </div>
   );
 
   return (
@@ -495,7 +507,7 @@ export default function OnboardingPage() {
                     placeholder="Enter your designation"
                   />
                 </div>
-
+                
                 <div>
                   <label htmlFor="education" className="block text-sm font-medium text-gray-700 mb-1">
                     Education
@@ -522,8 +534,8 @@ export default function OnboardingPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none"
                     placeholder="Enter your location"
                   />
-                </div>
-
+              </div>
+              
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email
@@ -566,8 +578,8 @@ export default function OnboardingPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none"
                     placeholder="Enter your focus area and description"
                   />
-                </div>
-
+              </div>
+              
                 <div>
                   <label htmlFor="congrats-message" className="block text-sm font-medium text-gray-700 mb-1">
                     Welcome Message
@@ -583,7 +595,7 @@ export default function OnboardingPage() {
                 </div>
               </div>
             </div>
-
+            
             <button
               id="download-button"
               onClick={handleDownload}
