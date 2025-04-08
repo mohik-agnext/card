@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from "next/link";
-import NextImage from "next/image";
 
 export default function OnboardingPage() {
   const [name, setName] = useState('');
@@ -127,13 +126,10 @@ export default function OnboardingPage() {
   const renderProfileImage = () => (
     <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#2F7B75] flex-shrink-0">
       {profileImage ? (
-        <NextImage
+        <img
           src={profileImage}
           alt="Profile"
-          width={192}
-          height={192}
           className="w-full h-full object-cover"
-          unoptimized
         />
       ) : (
         <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -247,13 +243,10 @@ export default function OnboardingPage() {
     <div className="relative">
       <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#2F7B75] shadow-lg">
         {smallProfileImage ? (
-          <NextImage
+          <img
             src={smallProfileImage}
             alt="Small Profile"
-            width={48}
-            height={48}
             className="w-full h-full object-cover"
-            unoptimized
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -337,13 +330,10 @@ export default function OnboardingPage() {
               onClick={() => handleSelectSuggestion(record)}
             >
               {record.fields.Photo?.[0]?.url && (
-                <NextImage
+                <img
                   src={record.fields.Photo[0].url}
                   alt={record.fields.Name}
-                  width={32}
-                  height={32}
                   className="w-8 h-8 rounded-full mr-3 object-cover"
-                  unoptimized
                 />
               )}
               <span>{record.fields.Name}</span>
@@ -430,13 +420,10 @@ export default function OnboardingPage() {
                 onClick={() => handleManagerSuggestionSelect(record)}
               >
                 {record.fields.Photo?.[0]?.url && (
-                  <NextImage
+                  <img
                     src={record.fields.Photo[0].url}
                     alt={record.fields.Name}
-                    width={32}
-                    height={32}
                     className="w-8 h-8 rounded-full mr-3 object-cover"
-                    unoptimized
                   />
                 )}
                 <span>{record.fields.Name}</span>
@@ -613,7 +600,7 @@ export default function OnboardingPage() {
               }}
             >
               {downloading ? 'Generating...' : 'Download as Image'}
-            </button>
+              </button>
           </div>
 
           {/* Preview Section */}
@@ -749,9 +736,9 @@ export default function OnboardingPage() {
                         {renderSmallProfileSection()}
                         <div className="flex-1">
                           <p className="text-gray-600 italic text-sm relative">
-                            <span className="text-[#2F7B75] text-lg mr-1">"</span>
+                            <span className="text-[#2F7B75] text-lg mr-1">&ldquo;</span>
                             {congratsMessage}
-                            <span className="text-[#2F7B75] text-lg ml-1">"</span>
+                            <span className="text-[#2F7B75] text-lg ml-1">&rdquo;</span>
                           </p>
                         </div>
                       </div>

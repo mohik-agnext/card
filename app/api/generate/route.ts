@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Launch browser
     const browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
@@ -127,7 +127,17 @@ export async function POST(request: NextRequest) {
         }, { name, designation, years });
       } else {
         // Onboarding card
-        await page.evaluate((data) => {
+        await page.evaluate((data: { 
+          name: string; 
+          designation: string; 
+          location: string; 
+          education: string; 
+          email: string; 
+          phone: string; 
+          description: string; 
+          congratsMessage: string;
+          [key: string]: string; 
+        }) => {
           // Update form inputs
           const inputs = {
             name: document.querySelector('#name'),

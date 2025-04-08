@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import Link from "next/link";
-import NextImage from "next/image";
+import Image from "next/image";
 
 // Add CSS for animations
 const animations = `
