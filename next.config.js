@@ -1,15 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push('puppeteer');
+    }
+    return config;
   },
-  typescript: {
-    ignoreBuildErrors: true,
+  experimental: {
+    serverComponentsExternalPackages: ['puppeteer-core', 'puppeteer']
   },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  poweredByHeader: false,
+  reactStrictMode: true,
   images: {
-    domains: ['*'],
-    unoptimized: true,
-  },
-}
+    domains: ['api.dicebear.com'],
+  }
+};
 
-module.exports = nextConfig 
+module.exports = nextConfig; 
