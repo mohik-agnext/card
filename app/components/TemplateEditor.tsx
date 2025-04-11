@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 
 type TemplateField = {
   id: string;
@@ -29,11 +28,11 @@ export default function TemplateEditor({ templateUrl, fields: initialFields, onS
   const templateRef = useRef<HTMLDivElement>(null);
 
   // Handle image load
-  const handleImageLoad = (event: any) => {
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     setImageLoaded(true);
     setTemplateDimensions({
-      width: event.target.naturalWidth,
-      height: event.target.naturalHeight
+      width: event.currentTarget.naturalWidth,
+      height: event.currentTarget.naturalHeight
     });
   };
 
@@ -56,24 +55,6 @@ export default function TemplateEditor({ templateUrl, fields: initialFields, onS
     setDraggedField(id);
     setDragOffset({ x: offsetX, y: offsetY });
     setSelectedField(id);
-  };
-
-  // Handle dragging
-  const handleDrag = (e: React.MouseEvent) => {
-    if (!draggedField || !templateRef.current) return;
-    
-    const rect = templateRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.clientX - rect.left - dragOffset.x, rect.width - 50));
-    const y = Math.max(0, Math.min(e.clientY - rect.top - dragOffset.y, rect.height - 20));
-    
-    setFields(fields.map(field => 
-      field.id === draggedField ? { ...field, x, y } : field
-    ));
-  };
-
-  // End dragging
-  const handleDragEnd = () => {
-    setDraggedField(null);
   };
 
   // Update field value

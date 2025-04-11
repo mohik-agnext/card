@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 type TemplateField = {
   id: string;
@@ -28,9 +28,9 @@ export default function TemplateConsumer({
   onImageError
 }: TemplateConsumerProps) {
   const [fields, setFields] = useState<TemplateField[]>([]);
+  const imgRef = useRef<HTMLImageElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [templateDimensions, setTemplateDimensions] = useState({ width: 1080, height: 1080 });
-  const imgRef = useRef<HTMLImageElement>(null);
 
   // Apply user data to template fields
   useEffect(() => {
@@ -64,45 +64,45 @@ export default function TemplateConsumer({
     }
   }, [templateUrl, onImageLoad]);
 
-  // Check if the image is already loaded when component mounts
-  useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      console.log("Image was already complete on mount");
-      handleImageLoad({ target: imgRef.current });
-    }
-  }, []);
-
   // Handle image load
-  const handleImageLoad = (event: any) => {
+  const handleImageLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
     console.log("Template image loaded successfully with dimensions:", 
-      event.target.naturalWidth, "x", event.target.naturalHeight);
+      event.currentTarget.naturalWidth, "x", event.currentTarget.naturalHeight);
     
     setImageLoaded(true);
     setTemplateDimensions({
-      width: event.target.naturalWidth || 1080,
-      height: event.target.naturalHeight || 1080
+      width: event.currentTarget.naturalWidth || 1080,
+      height: event.currentTarget.naturalHeight || 1080
     });
     
     if (onImageLoad) {
       onImageLoad();
     }
-  };
+  }, [onImageLoad]);
+
+  // Check if the image is already loaded when component mounts
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      console.log("Image was already complete on mount");
+      handleImageLoad({ currentTarget: imgRef.current } as React.SyntheticEvent<HTMLImageElement>);
+    }
+  }, [handleImageLoad]);
 
   // Handle image error
-  const handleImageError = (e: any) => {
-    console.error("Failed to load template image in TemplateConsumer:", e.target.src);
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    console.error("Failed to load template image in TemplateConsumer:", e.currentTarget.src);
     if (onImageError) {
       onImageError();
     }
   };
 
   // Get field specific styling
-  const getFieldStyles = (field: TemplateField) => {
+  const getFieldStyles = (field: TemplateField): React.CSSProperties => {
     // Calculate the scale ratio for responsive sizing
     const scaleFactor = 1080 / templateDimensions.width;
     
     // Base styles
-    const styles: any = {
+    const styles: React.CSSProperties = {
       position: 'absolute',
       left: `${field.x / scaleFactor}px`,
       top: `${field.y / scaleFactor}px`,

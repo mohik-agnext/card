@@ -5,72 +5,37 @@ import Link from 'next/link';
 import TemplateEditor from '../components/TemplateEditor';
 
 // Default template fields
-const defaultFields = [
-  {
-    id: 'name',
-    type: 'text' as const,
-    label: 'Name',
-    x: 150,
-    y: 100,
-    width: 200,
-    height: 30,
-    value: 'John Doe'
-  },
-  {
-    id: 'photo',
-    type: 'image' as const,
-    label: 'Photo',
-    x: 50,
-    y: 100,
-    width: 80,
-    height: 80,
-    value: ''
-  },
-  {
-    id: 'mobile',
-    type: 'text' as const,
-    label: 'Mobile Number',
-    x: 150,
-    y: 140,
-    width: 200,
-    height: 30,
-    value: '+1 (555) 123-4567'
-  },
-  {
-    id: 'designation',
-    type: 'text' as const,
-    label: 'Designation',
-    x: 150,
-    y: 180,
-    width: 200,
-    height: 30,
-    value: 'Software Engineer'
-  },
-  {
-    id: 'date',
-    type: 'date' as const,
-    label: 'Date',
-    x: 300,
-    y: 220,
-    width: 120,
-    height: 30,
-    value: '05/15/2023'
-  }
-];
+// const defaultFields = [ ... ];
+
+interface TemplateField {
+  id: string;
+  type: 'text' | 'image' | 'date';
+  label: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  value: string;
+}
 
 export default function TemplateDesignerPage() {
   const [templateUrl, setTemplateUrl] = useState('/placeholder-template.png');
-  const [fields, setFields] = useState(defaultFields);
+  const [fields] = useState<TemplateField[]>([]);
   const [templateUploaded, setTemplateUploaded] = useState(false);
-  const [savedFields, setSavedFields] = useState<any[]>([]);
+  const [savedFields, setSavedFields] = useState<TemplateField[]>([]);
 
   // Handle template upload
   const handleTemplateUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setTemplateUrl(url);
-      setTemplateUploaded(true);
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setTemplateUrl(event.target.result as string);
+          setTemplateUploaded(true);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -81,10 +46,14 @@ export default function TemplateDesignerPage() {
   };
 
   // Handle field configuration save
-  const handleSaveFields = (updatedFields: any[]) => {
+  const handleSaveFields = (updatedFields: TemplateField[]) => {
     setSavedFields(updatedFields);
     alert('Template configuration saved successfully!');
   };
+
+  // Remove unused event handlers if they're not being used
+  // const handleDrop = (e: DragEvent) => { ... };
+  // const handleDragOver = (e: DragEvent) => { ... };
 
   return (
     <div className="min-h-screen flex flex-col">

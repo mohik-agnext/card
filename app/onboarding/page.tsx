@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from "next/link";
-import Image from "next/image";
 
 export default function OnboardingPage() {
   const [name, setName] = useState('');
@@ -75,33 +74,33 @@ export default function OnboardingPage() {
     }
 
     try {
-      const formData = new FormData();
-      formData.append('type', 'onboarding');
-      formData.append('name', name);
-      formData.append('designation', designation);
-      formData.append('location', location);
-      formData.append('education', education);
-      formData.append('email', email);
-      formData.append('phone', phone);
-      formData.append('description', description);
-      formData.append('congratsMessage', congratsMessage);
-      formData.append('reportingManager', reportingManager);
-      
-      // Append both profile images
-      if (profileImage) {
-        formData.append('profileImageUrl', profileImage);
-      }
-      if (smallProfileImage) {
-        formData.append('smallProfileImageUrl', smallProfileImage);
-      }
-
+      // Send JSON data
       const response = await fetch('/api/generate', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'onboarding',
+          name,
+          designation,
+          location,
+          education,
+          email,
+          phone,
+          description,
+          congratsMessage,
+          reportingManager,
+          profileImageUrl: profileImage || undefined,
+          smallProfileImageUrl: smallProfileImage || undefined
+        })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate image');
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        const errorData = JSON.parse(errorText);
+        throw new Error(errorData.details || 'Failed to generate image');
       }
 
       const blob = await response.blob();
@@ -113,7 +112,7 @@ export default function OnboardingPage() {
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to generate image');
+      alert(`Failed to generate image: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setDownloading(false);
       if (downloadButton) {
@@ -737,9 +736,9 @@ export default function OnboardingPage() {
                         {renderSmallProfileSection()}
                         <div className="flex-1">
                           <p className="text-gray-600 italic text-sm relative">
-                            <span className="text-[#2F7B75] text-lg mr-1">"</span>
+                            <span className="text-[#2F7B75] text-lg mr-1">&ldquo;</span>
                             {congratsMessage}
-                            <span className="text-[#2F7B75] text-lg ml-1">"</span>
+                            <span className="text-[#2F7B75] text-lg ml-1">&rdquo;</span>
                           </p>
                         </div>
                       </div>

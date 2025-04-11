@@ -15,32 +15,30 @@ export default function BirthdayPage() {
 
   // Download as image
   const handleDownload = async () => {
-    if (!templateRef.current) {
-      alert('Template not ready. Please try again.');
-      return;
-    }
-
-    setDownloading(true);
     const button = document.getElementById('download-button');
     if (button) {
       button.textContent = 'Generating...';
       button.setAttribute('disabled', 'true');
     }
+    setDownloading(true);
 
     try {
-      // Create FormData object
-      const formData = new FormData();
-      formData.append('type', 'birthday');
-      formData.append('name', name);
-
-      // Call the API endpoint
+      // Send JSON data
       const response = await fetch('/api/generate', {
         method: 'POST',
-        body: formData // FormData will automatically set the correct Content-Type
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'birthday',
+          name: name
+        })
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ details: 'Failed to generate image' }));
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        const errorData = JSON.parse(errorText);
         throw new Error(errorData.details || 'Failed to generate image');
       }
 

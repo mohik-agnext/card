@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from 'react';
 import Link from "next/link";
-import Image from "next/image";
 
 // Add CSS for animations
 const animations = `
@@ -67,21 +66,24 @@ export default function WorkAnniversaryPage() {
     }
 
     try {
-      // Create FormData object
-      const formData = new FormData();
-      formData.append('type', 'work-anniversary');
-      formData.append('name', name);
-      formData.append('designation', designation);
-      formData.append('years', years);
-
-      // Call the API endpoint
+      // Send JSON data
       const response = await fetch('/api/generate', {
         method: 'POST',
-        body: formData // FormData will automatically set the correct Content-Type
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'work-anniversary',
+          name,
+          designation,
+          years
+        })
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ details: 'Failed to generate image' }));
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        const errorData = JSON.parse(errorText);
         throw new Error(errorData.details || 'Failed to generate image');
       }
 
@@ -548,7 +550,7 @@ export default function WorkAnniversaryPage() {
                         textShadow: '0 1px 2px rgba(0,0,0,0.4)'
                       }}>
                         Congratulations on reaching another milestone with us! We truly appreciate
-                        your dedication and hard work, and we're grateful for everything you do.
+                        your dedication and hard work, and we&apos;re grateful for everything you do.
                         Wishing you continued success and many more great years ahead!
                       </p>
                     </div>
