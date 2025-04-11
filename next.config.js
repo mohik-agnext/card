@@ -4,11 +4,7 @@ const nextConfig = {
     domains: ['dl.airtable.com'], // Add Airtable domain for profile images
   },
   // Enable static exports for Vercel
-  output: 'standalone',
-  // Configure allowed development origins
-  experimental: {
-    allowedDevOrigins: ['localhost:3000', 'localhost:3001'],
-  },
+  output: 'standalone'
 }
 
 module.exports = nextConfig 

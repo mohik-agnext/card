@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import puppeteer from 'puppeteer';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 interface CardData {
   type: string;
   name: string;
@@ -37,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     // Launch browser
     browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -214,10 +217,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-export const config = {
-  api: {
-    bodyParser: false
-  }
-}; 
+} 
