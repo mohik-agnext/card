@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from "next/link";
+import Image from "next/image";
 
 export default function OnboardingPage() {
   const [name, setName] = useState('');
@@ -167,7 +168,7 @@ export default function OnboardingPage() {
               bottom: '-8px',
               left: '0',
               width: '100%',
-              height: '3px',
+              height: '2px',
               background: 'linear-gradient(90deg, transparent, #2F7B75, transparent)',
             }}></div>
             <div style={{
@@ -188,8 +189,8 @@ export default function OnboardingPage() {
         <div className="text-gray-600 text-sm leading-relaxed">
           {description || 'Your focus areas and description will appear here'}
         </div>
-            </div>
-          </div>
+      </div>
+    </div>
   );
 
   // Handle search input
@@ -341,7 +342,7 @@ export default function OnboardingPage() {
           ))}
         </div>
       )}
-          </div>
+    </div>
   );
 
   // Handle manager search input
@@ -432,7 +433,7 @@ export default function OnboardingPage() {
           </div>
         )}
       </div>
-          </div>
+    </div>
   );
 
   return (
@@ -494,7 +495,7 @@ export default function OnboardingPage() {
                     placeholder="Enter your designation"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="education" className="block text-sm font-medium text-gray-700 mb-1">
                     Education
@@ -521,8 +522,8 @@ export default function OnboardingPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none"
                     placeholder="Enter your location"
                   />
-              </div>
-              
+                </div>
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email
@@ -565,8 +566,8 @@ export default function OnboardingPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none"
                     placeholder="Enter your focus area and description"
                   />
-              </div>
-              
+                </div>
+
                 <div>
                   <label htmlFor="congrats-message" className="block text-sm font-medium text-gray-700 mb-1">
                     Welcome Message
@@ -582,7 +583,7 @@ export default function OnboardingPage() {
                 </div>
               </div>
             </div>
-            
+
             <button
               id="download-button"
               onClick={handleDownload}
@@ -600,7 +601,7 @@ export default function OnboardingPage() {
               }}
             >
               {downloading ? 'Generating...' : 'Download as Image'}
-              </button>
+            </button>
           </div>
 
           {/* Preview Section */}
@@ -736,9 +737,9 @@ export default function OnboardingPage() {
                         {renderSmallProfileSection()}
                         <div className="flex-1">
                           <p className="text-gray-600 italic text-sm relative">
-                            <span className="text-[#2F7B75] text-lg mr-1">&ldquo;</span>
+                            <span className="text-[#2F7B75] text-lg mr-1">"</span>
                             {congratsMessage}
-                            <span className="text-[#2F7B75] text-lg ml-1">&rdquo;</span>
+                            <span className="text-[#2F7B75] text-lg ml-1">"</span>
                           </p>
                         </div>
                       </div>

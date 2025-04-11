@@ -1,23 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals.push('puppeteer');
-    }
-    return config;
-  },
-  experimental: {
-    serverComponentsExternalPackages: ['puppeteer-core', 'puppeteer']
-  },
-  swcMinify: true,
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
-  poweredByHeader: false,
-  reactStrictMode: true,
   images: {
-    domains: ['api.dicebear.com'],
-  }
-};
+    domains: ['dl.airtable.com'], // Add Airtable domain for profile images
+  },
+  // Enable static exports for Vercel
+  output: 'standalone',
+  // Configure allowed development origins
+  experimental: {
+    allowedDevOrigins: ['localhost:3000', 'localhost:3001'],
+  },
+}
 
-module.exports = nextConfig; 
+module.exports = nextConfig 
